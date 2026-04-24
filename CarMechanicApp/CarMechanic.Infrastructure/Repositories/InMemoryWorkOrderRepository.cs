@@ -8,6 +8,8 @@ namespace CarMechanic.Infrastructure.Repositories;
 
 public class InMemoryWorkOrderRepository : IWorkOrderRepository
 {
+    private readonly IMechanicRepository _mechanicRepository = new InMemoryMechanicRepository();
+
     private readonly List<WorkOrder> _workOrders = new();
     private readonly List<WorkOrderPart> _orderParts = new();
 
@@ -46,10 +48,10 @@ public class InMemoryWorkOrderRepository : IWorkOrderRepository
 
     public void ReassignMechanicById(int workOrderId, int newMechanicId)
     {
-        //var mechanic = _mechanicRepository.GetMechanicById(newMechanicId);
-        //if (mechanic == null) throw new InvalidOperationException();
-        //var order = GetById(workOrderId);
-        //if (order.Status != WorkOrderStatus.Pending || order.Status != WorkOrderStatus.InProgress) throw new InvalidOperationException();
-        //order.MechanicId = newMechanicId;
+        var mechanic = _mechanicRepository.GetById(newMechanicId);
+        if (mechanic!.Id != newMechanicId) throw new InvalidOperationException();
+        var order = GetById(workOrderId);
+        if (order!.Status != WorkOrderStatus.Pending && order.Status != WorkOrderStatus.InProgress) throw new InvalidOperationException();
+        order.MechanicId = newMechanicId;
     }
 }

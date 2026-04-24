@@ -141,7 +141,7 @@ public class WorkOrderService
     public void AddPartToWorkOrder(int workOrderId, int partId, int quantity, decimal unitPrice)
     {
         var order = _workOrderRepository.GetById(workOrderId);
-        if (order.Status == WorkOrderStatus.Completed) throw new InvalidOperationException();
+        if (order!.Status == WorkOrderStatus.Completed) throw new InvalidOperationException();
         _workOrderRepository.PartToWorkdOrder(workOrderId, partId, quantity, unitPrice);
     }
 
