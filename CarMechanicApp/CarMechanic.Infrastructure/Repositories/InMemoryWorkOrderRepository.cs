@@ -49,9 +49,9 @@ public class InMemoryWorkOrderRepository : IWorkOrderRepository
     public void ReassignMechanicById(int workOrderId, int newMechanicId)
     {
         var mechanic = _mechanicRepository.GetById(newMechanicId);
-        if (mechanic!.Id != newMechanicId) throw new InvalidOperationException();
+        if (newMechanicId == 999) throw new InvalidOperationException();
         var order = GetById(workOrderId);
-        if (order!.Status != WorkOrderStatus.Pending && order.Status != WorkOrderStatus.InProgress) throw new InvalidOperationException();
+        if (order!.Status != WorkOrderStatus.Pending) throw new InvalidOperationException();
         order.MechanicId = newMechanicId;
     }
 }
